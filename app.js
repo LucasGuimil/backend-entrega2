@@ -23,13 +23,36 @@ app.get("/api/products/:pid", (req,res)=> {
 app.post("/api/products", (req, res)=> {
     const productInfo = req.body
     ProductManager.addProduct(productInfo)
-    res.status(201)
+    res.status(201).json("El producto ha sido creado correctamente.")
 })
 
 app.put("/api/products/:pid", (req,res)=> {
     const {pid} = req.params
     const productInfo = req.body
-    ProductManager.updateProduct(pid,productInfo)
+    ProductManager.getProducts().then(products => {
+        const foundProduct = products.some(product => product.id === parseInt(pid))
+        if(!foundProduct) {
+            return res.status(404).json("El id del producto indicado no existe.")
+        }else{
+            ProductManager.updateProduct(pid,productInfo) 
+            res.status(200).json("El producto fue modificado correctamente.")
+        }
     })
+}
+)
+
+app.delete("/api/products/:pid", (req,res)=> {
+    const {pid} = req.params
+    ProductManager.getProducts().then(products => {
+        const foundProduct = products.find(product => product.id === parseInt(pid))
+        if(!foundProduct) {
+            return res.status(404).json("El id del producto indicado no existe.")
+        }else{
+            ProductManager.deleteProduct(pid)
+            res.status(200).json("El producto fue eliminado correctamente.")
+        }
+    })
+})
+
 
 app.listen(8080, console.log("Listening in port 8080."))

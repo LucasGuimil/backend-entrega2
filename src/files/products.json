@@ -4,10 +4,10 @@
     "title": "T-Shirt",
     "description": "Basic t-shirt with rounded neck.",
     "code": "TS01",
-    "price": 10000,
+    "price": 8000,
     "status": true,
-    "stock": 5,
-    "category": "Unisex",
+    "stock": 15,
+    "category": "Clothing",
     "thumbnails": [
       "Array de Strings (rutas donde están almacenadas las imágenes del producto)."
     ]
@@ -20,24 +20,9 @@
     "price": 20000,
     "status": true,
     "stock": 6,
-    "category": "Unisex",
+    "category": "Clothing",
     "thumbnails": [
       "Array de Strings (rutas donde están almacenadas las imágenes del producto)."
-    ]
-  },
-  {
-    "id": 3,
-    "title": "Jacket",
-    "description": "normal jacket",
-    "code": "JC01",
-    "price": 1500,
-    "status": false,
-    "stock": 5,
-    "category": "Unisex",
-    "thumbnails": [
-      "uno.jpg",
-      "dos.jpg",
-      "tres.jpg"
     ]
   },
   {
@@ -48,21 +33,7 @@
     "price": 8000,
     "status": true,
     "stock": 9,
-    "category": "Unisex",
-    "thumbnails": [
-      "uno.jpg",
-      "dos.jpg"
-    ]
-  },
-  {
-    "id": 6,
-    "title": "Beanie Hat with Brand",
-    "description": "Beanie hat",
-    "code": "BN01",
-    "price": 9000,
-    "status": true,
-    "stock": 10,
-    "category": "Unisex",
+    "category": "Clothing",
     "thumbnails": [
       "uno.jpg",
       "dos.jpg"
