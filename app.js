@@ -59,7 +59,7 @@ app.delete("/api/products/:pid", (req,res)=> {
 //carts
 app.post("/api/carts", (req,res)=> {
     CartManager.newCart()
-    .then(() => res.status(201).json("Nuevo carrito creado exitosamente."))
+    .then((id) => res.status(201).json(`Nuevo carrito creado exitosamente con el número de ID: ${id}.`))
     .catch(()=>res.status(400).json("Error al crear el nuevo carrito."))
 })
 

@@ -21,6 +21,7 @@ export class CartManager {
         const converted = JSON.stringify(carts,null,2)
         await fs.promises.writeFile("./src/files/carts.json",converted)
         console.log("Carrito creado con éxito.")
+        return id
     } catch (error){
         throw new Error("Se ha producido un error al crear un nuevo carrito.",error)
     }
