@@ -15,7 +15,10 @@ viewsRouter.get("/", (req, res)=> {
 })
 
 viewsRouter.get("/realTimeProducts" , (req,res)=>{
-    res.render("realTimeProducts")
-})
+    const pageName = "Productos en tiempo real"
+        res.render("realTimeProducts",{
+            pageName,
+        })
+    })
 
 export default viewsRouter

@@ -19,12 +19,13 @@ productsRouter.get("/:pid", (req,res)=> {
 })
 
 productsRouter.post("/", (req, res)=> {
+    console.log(req.body)   
     const productInfo = req.body
     ProductManager.addProduct(productInfo)
     res.status(201).json("El producto ha sido creado correctamente.")
 })
 
-productsRouter.put("/api/products/:pid", (req,res)=> {
+productsRouter.put("/:pid", (req,res)=> {
     const {pid} = req.params
     const productInfo = req.body
     ProductManager.getProducts().then(products => {

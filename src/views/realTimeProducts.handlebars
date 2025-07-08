@@ -1,0 +1,28 @@
+<div>
+    {{#each products}}
+    <div>
+        <ul>
+            <li>{{this.id}}</li>
+            <li>{{this.title}}</li>
+        </ul>
+        <button>Delete</button>
+    </div>  
+    {{/each}}
+
+    <div>
+        <h3>Add a new product</h3>
+        <form>
+            <label for="title">Nombre: </label><input type="text" id="title">
+            <label for="description">Description: </label><input type="text" id="description">
+            <label for="code">Code: </label><input type="text" id="code">
+            <label for="price">Price: </label><input type="number" id="price">
+            <label for="status">Status: </label><input type="text" id="status">
+            <label for="stock">Stock: </label><input type="number" id="stock">
+            <label for="category">Category: </label><input type="text" id="category">
+            <label for="thumbnails">Thumbnails: </label><input type="text" id="thumbnails">
+            <button type="submit" id="addProduct">Crear nuevo producto</button>
+        </form>
+    </div>
+</div>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/main.js"></script>

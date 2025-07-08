@@ -6,7 +6,7 @@
     "code": "TS01",
     "price": 8000,
     "status": true,
-    "stock": 15,
+    "stock": 6,
     "category": "Clothing",
     "thumbnails": [
       "Array de Strings (rutas donde están almacenadas las imágenes del producto)."
@@ -37,6 +37,19 @@
     "thumbnails": [
       "uno.jpg",
       "dos.jpg"
+    ]
+  },
+  {
+    "id": 4,
+    "title": "Jacket",
+    "description": "Basic jacket with hoodie.",
+    "code": "J001",
+    "price": 10000,
+    "status": true,
+    "stock": 9,
+    "category": "Clothing",
+    "thumbnails": [
+      "Array de Strings (rutas donde están almacenadas las imágenes del producto)."
     ]
   }
 ]
