@@ -1,5 +1,6 @@
 
 const socket=io()
+
 const container = document.getElementById("productList")
 const form = document.getElementById("form")
 const inputTitle = document.getElementById("title")
@@ -15,13 +16,19 @@ socket.on("showProducts",(products)=>{
     container.innerHTML=""
     products.forEach(product => {
         let card = document.createElement("div")
+        card.className="card"
         card.innerHTML = `
-                        <ul>
-                            <li>${product.id}</li>
-                            <li>${product.title}</li>
-                            <li>${product.price}</li>
+                            <p>ID: ${product.id}</p>
+                            <p>Title: ${product.title}</p>
+                            <p>Description: ${product.description}</p>
+                            <p>Code: ${product.code}</p>
+                            <p>Price: ${product.price}</p>
+                            <p>Status: ${product.status}</p>
+                            <p>Stock: ${product.stock}</p>
+                            <p>Category: ${product.category}</p>
+                            <p>Thumbnails: ${product.thumbnails}</p>
                             <button class="delete" id=${product.id}>Eliminar producto</button>
-                        </ul>`
+                        `
         container.appendChild(card)
     })
     const deleteButtons = document.querySelectorAll(".delete")
@@ -43,7 +50,7 @@ form.addEventListener("submit", (e)=> {
         status: inputStatus.value,
         stock: inputStock.value,
         category: inputCategory.value,
-        thumnails: inputThumbnails.value
+        thumbnails: inputThumbnails.value
     }
     socket.emit("addProduct", newProduct)
 })

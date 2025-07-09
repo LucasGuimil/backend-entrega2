@@ -32,7 +32,6 @@ io.on("connection", (socket)=> {
     })
 
     socket.on("deleteProduct", (pid)=>{
-        console.log(pid)
         ProductManager.deleteProduct(pid)
         ProductManager.getProducts().then(products=> {
             io.emit("showProducts", products)

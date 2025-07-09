@@ -1,10 +1,18 @@
 <div>
+    <h2>{{pageName}}</h2>
+    <div id="productList">
     {{#each products}}
-    <div>
-        <ul>
-            <li>{{this.id}}</li>
-            <li>{{this.title}}</li>
-        </ul>
+    <div class="card">
+        <p>ID: {{this.id}}</p>
+        <p>Title: {{this.title}}</p>
+        <p>Description: {{this.description}}</p>
+        <p>Code: {{this.code}}</p>
+        <p>Price: {{this.price}}</p>
+        <p>Status: {{this.status}}</p>
+        <p>Stock: {{this.stock}}</p>
+        <p>Category: {{this.category}}</p>
+        <p>Thumbnails: {{this.thumbnails}}</p>
     </div>  
     {{/each}}
+    </div>
 </div>

@@ -1,29 +1,19 @@
 <div>
+    <h2>{{pageName}}</h2>
     <div id="productList">
-    {{#if noSocket}}
-        {{#each products}}
-        <div>
-            <ul>
-                <li>{{this.id}}</li>
-                <li>{{this.title}}</li>
-            </ul>
-            <button>Delete</button>
-        </div>  
-        {{/each}}
-    {{/if}}
     </div>
     
-    <div>
+    <div class="form-container">
         <h3>Add a new product</h3>
         <form id="form">
-            <label for="title">Nombre: </label><input type="text" id="title">
-            <label for="description">Description: </label><input type="text" id="description">
-            <label for="code">Code: </label><input type="text" id="code">
-            <label for="price">Price: </label><input type="number" id="price">
-            <label for="status">Status: </label><input type="text" id="status">
-            <label for="stock">Stock: </label><input type="number" id="stock">
-            <label for="category">Category: </label><input type="text" id="category">
-            <label for="thumbnails">Thumbnails: </label><input type="text" id="thumbnails">
+            <label for="title">Name: </label><input type="text" id="title" required>
+            <label for="description">Description: </label><input type="text" id="description" required>
+            <label for="code">Code: </label><input type="text" id="code" required>
+            <label for="price">Price: </label><input type="number" id="price" required>
+            <label for="status">Status: </label><input type="text" id="status" required>
+            <label for="stock">Stock: </label><input type="number" id="stock" required>
+            <label for="category">Category: </label><input type="text" id="category" required>
+            <label for="thumbnails">Thumbnails: </label><input type="text" id="thumbnails" required>
             <button type="submit" id="addProduct">Crear nuevo producto</button>
         </form>
     </div>

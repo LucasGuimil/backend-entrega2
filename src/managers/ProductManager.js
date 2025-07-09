@@ -25,7 +25,7 @@ export class ProductManager {
                 "status": Boolean(status),
                 "stock": parseInt(stock),
                 "category": category,
-                "thumbnails": Array(thumbnails).flat(1)
+                "thumbnails": thumbnails.split(",")
             })
             const converted = JSON.stringify(products,null,2)
             await fs.promises.writeFile("./src/files/products.json",converted)
