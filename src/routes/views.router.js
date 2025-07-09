@@ -4,11 +4,13 @@ import { ProductManager } from "../managers/ProductManager.js"
 const viewsRouter = Router()
 
 viewsRouter.get("/", (req, res)=> {
-    const pageName = "Productos"
+    const pageName = "Productos estáticos"
     ProductManager.getProducts()
     .then(products => {
+        const noSocket = true 
         res.render("home",{
             pageName,
+            noSocket,
             products
         })
     })

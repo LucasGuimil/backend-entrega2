@@ -1,17 +1,21 @@
 <div>
-    {{#each products}}
-    <div>
-        <ul>
-            <li>{{this.id}}</li>
-            <li>{{this.title}}</li>
-        </ul>
-        <button>Delete</button>
-    </div>  
-    {{/each}}
-
+    <div id="productList">
+    {{#if noSocket}}
+        {{#each products}}
+        <div>
+            <ul>
+                <li>{{this.id}}</li>
+                <li>{{this.title}}</li>
+            </ul>
+            <button>Delete</button>
+        </div>  
+        {{/each}}
+    {{/if}}
+    </div>
+    
     <div>
         <h3>Add a new product</h3>
-        <form>
+        <form id="form">
             <label for="title">Nombre: </label><input type="text" id="title">
             <label for="description">Description: </label><input type="text" id="description">
             <label for="code">Code: </label><input type="text" id="code">

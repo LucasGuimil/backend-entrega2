@@ -26,20 +26,6 @@
     ]
   },
   {
-    "id": 3,
-    "title": "Baseball hat",
-    "description": "Black baseball hat",
-    "code": "BH01",
-    "price": 8000,
-    "status": true,
-    "stock": 6,
-    "category": "Clothing",
-    "thumbnails": [
-      "uno.jpg",
-      "dos.jpg"
-    ]
-  },
-  {
     "id": 4,
     "title": "Jacket",
     "description": "Basic jacket with hoodie.",
