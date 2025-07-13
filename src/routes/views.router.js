@@ -4,7 +4,7 @@ import { ProductManager } from "../managers/ProductManager.js"
 const viewsRouter = Router()
 
 viewsRouter.get("/", (req, res)=> {
-    const pageName = "Productos estáticos"
+    const pageName = "Static products"
     ProductManager.getProducts()
     .then(products => {
         const noSocket = true 
@@ -17,7 +17,7 @@ viewsRouter.get("/", (req, res)=> {
 })
 
 viewsRouter.get("/realTimeProducts" , (req,res)=>{
-    const pageName = "Productos en tiempo real"
+    const pageName = "Real time products"
         res.render("realTimeProducts",{
             pageName,
         })
