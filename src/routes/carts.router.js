@@ -1,31 +1,62 @@
 import { Router } from "express"
-import {CartManager} from "../managers/CartManager.js"
+import cartModel from "../modules/cart.model.js"
+import productModel from "../modules/product.model.js"
 
 const cartsRouter = Router()
 
-cartsRouter.post("/", (req,res)=> {
-    CartManager.newCart()
-    .then((id) => res.status(201).json(`Nuevo carrito creado exitosamente con el número de ID: ${id}.`))
-    .catch(()=>res.status(400).json("Error al crear el nuevo carrito."))
-})
-
-cartsRouter.get("/:cid",(req,res)=> {
-    const {cid} = req.params
-    CartManager.getCarts().then(carts => {
-        const foundCart = carts.find(cart => cart.id === parseInt(cid))
-        if(!foundCart) {
-            return res.status(404).json("El id del carrito indicado no existe.")
-        }else{
-            res.json(foundCart.products)
+cartsRouter.post("/", async (req,res)=> {
+    try {
+        const newCart = new cartModel()
+        await newCart.save()
+        res.status(201).send(`New cart created succesfully! Your ID cart is: ${newCart._id}`)
+    } catch (error) {
+        res.status(500).send(error)
         }
-    })
-})
+    }
+)
 
-cartsRouter.post("/:cid/product/:pid", (req,res)=> {
+
+cartsRouter.get("/:cid", async (req,res)=> {
+    const {cid} = req.params
+    try {
+        const foundCart = await cartModel.findById(cid)
+        if(!foundCart){
+            return res.status(404).send("ID not found.")
+        }
+        res.status(200).send(foundCart)
+    } catch (error) {
+        res.status(500).send(error)
+        }   
+    }
+)
+
+cartsRouter.post("/:cid/product/:pid", async (req,res)=> {
     const {cid, pid} = req.params
-    CartManager.addProduct(cid,pid)
-    .then(()=> res.status(200).json("El producto fue agregado correctamente."))
-    .catch(()=> res.status(400).json("No se pudo agregar el producto al carrito."))
+    try {
+        const foundCart = await cartModel.findById(cid)
+        if(!foundCart){
+            return res.status(404).send("Cart ID not found.")
+        }
+        const foundProduct = await productModel.findById(pid)
+        if(!foundProduct){
+            return res.status(404).send("Product ID not found.")
+        }
+        if(foundCart.products.some(product => product.productID==pid)){
+            const existingProduct = foundCart.products.find(product => product.productID==pid)
+            existingProduct.quantity++
+            await cartModel.updateOne({_id:cid},foundCart)
+            res.status(200).send("Updated quantity on existing product.")
+        }else{
+            foundCart.products.push({
+                productID: pid,
+                quantity: 1
+            })
+            await cartModel.updateOne({_id:cid},foundCart)
+            res.status(200).send("Product added to cart.")
+        }
+    } catch (error) {
+        res.status(500).send(error)
+    }
 })
 
 export default cartsRouter
