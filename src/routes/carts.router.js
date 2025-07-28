@@ -19,10 +19,11 @@ cartsRouter.post("/", async (req,res)=> {
 cartsRouter.get("/:cid", async (req,res)=> {
     const {cid} = req.params
     try {
-        const foundCart = await cartModel.findById(cid)
+        const foundCart = await cartModel.findById(cid).populate("products.productID")
         if(!foundCart){
             return res.status(404).send("ID not found.")
         }
+
         res.status(200).send(foundCart)
     } catch (error) {
         res.status(500).send(error)
@@ -33,19 +34,20 @@ cartsRouter.get("/:cid", async (req,res)=> {
 cartsRouter.put("/:cid", async (req,res)=> {
     const {cid} = req.params
     const newProducts = req.body
-    console.log(newProducts)
     try {
         const foundCart = await cartModel.findById(cid)
         if(!foundCart){
-            return res.status(404).send("Cart ID not found.")
+            return res.status(404).send("Cart ID not found in database.")
         }
         const existingProducts = await productModel.find()
-        newProducts.forEach(product => {
-            if(existingProducts.some(existingProduct => product.productID!=existingProduct._id)){
-                return res.status(500).send("ID product of the new array is not valid.")
-            }})
+        
+        for (const newProduct of newProducts) {
+            if (!existingProducts.some(existingProduct => existingProduct._id==newProduct.productID)) {
+                return res.status(400).send("One or more of the added products does not exist in the database. Please check again!")
+            }
+        }
         foundCart.products = newProducts
-        await cartModel.updateOne(cid,foundCart)
+        await cartModel.updateOne({_id:cid},foundCart)
         res.status(200).send("Cart updated succesfully!")
     } catch (error) {
         res.status(500).send(error)
@@ -58,11 +60,11 @@ cartsRouter.post("/:cid/product/:pid", async (req,res)=> {
     try {
         const foundCart = await cartModel.findById(cid)
         if(!foundCart){
-            return res.status(404).send("Cart ID not found.")
+            return res.status(404).send("Cart ID not found in database.")
         }
         const foundProduct = await productModel.findById(pid)
         if(!foundProduct){
-            return res.status(404).send("Product ID not found.")
+            return res.status(404).send("Product ID not found in database.")
         }
         if(foundCart.products.some(product => product.productID==pid)){
             const existingProduct = foundCart.products.find(product => product.productID==pid)
@@ -82,16 +84,42 @@ cartsRouter.post("/:cid/product/:pid", async (req,res)=> {
     }
 })
 
+cartsRouter.put("/:cid/product/:pid", async (req,res)=> {
+    const {cid, pid} = req.params
+    const newQuantity = req.body
+
+    try {
+        const foundCart = await cartModel.findById(cid)
+        if(!foundCart){
+            return res.status(404).send("Cart ID not found in database.")
+        }
+        const foundProduct = await productModel.findById(pid)
+        if(!foundProduct){
+            return res.status(404).send("Product ID not found in database.")
+        }
+        if(foundCart.products.some(product => product.productID==pid)){
+            const existingProduct = foundCart.products.find(product => product.productID==pid)
+            existingProduct.quantity = newQuantity.quantity
+            await cartModel.updateOne({_id:cid},foundCart)
+            res.status(200).send("Updated quantity on existing product.")
+        }else{
+            res.status(400).send("The requested product does not exist in this cart. Please check again!")
+        }
+    } catch (error) {
+        res.status(500).send(error)
+    }
+})
+
 cartsRouter.delete("/:cid/product/:pid", async (req,res)=> {
     const {cid, pid} = req.params
     try {
         const foundCart = await cartModel.findById(cid)
         if(!foundCart){
-            return res.status(404).send("Cart ID not found.")
+            return res.status(404).send("Cart ID not found in database.")
         }
         const foundProduct = await productModel.findById(pid)
         if(!foundProduct){
-            return res.status(404).send("Product ID not found.")
+            return res.status(404).send("Product ID not found in database.")
         }
         if(foundCart.products.some(product => product.productID==pid)){
             const deleteIndex = foundCart.products.findIndex(product => product.productID==pid)
@@ -99,12 +127,27 @@ cartsRouter.delete("/:cid/product/:pid", async (req,res)=> {
             await cartModel.updateOne({_id:cid},foundCart)
             res.status(200).send("Product deleted!")
         }else{
-            res.status(404).send("Product ID not found in this cart.")
+            res.status(404).send("The requested product does not exist in this cart. Please check again!")
         }
     } catch (error) {
         res.status(500).send(error)
     }
 })
 
+cartsRouter.delete("/:cid", async (req, res)=> {
+    const {cid} = req.params
+    try {
+        const foundCart = await cartModel.findById(cid)
+        if(!foundCart){
+            return res.status(404).send("Cart ID not found in database.")
+        }
+        foundCart.products = []
+        console.log(foundCart.products)
+        await cartModel.updateOne({_id:cid},foundCart)
+        res.status(200).send(`Cart ${cid} successfully emptied!`)
+    } catch (error) {
+        res.status(500).send(error)
+    }
+})
 
 export default cartsRouter
