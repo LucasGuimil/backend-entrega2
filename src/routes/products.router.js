@@ -1,43 +1,78 @@
 import { Router } from "express"
-import productModel from "../modules/product.model.js"
+import productModel from "../modules/product.model.js"  
 
 const productsRouter = Router()
 
 productsRouter.get("/", async (req,res)=>{
-    const {limit = 1, page = 1, query, sort} = req.query
+    const {limit = 5, page = 1, sort,status,category} = req.query
     const myCustomLabels = {
         docs: "payload",
         totalDocs: false,
         limit: false,
         pagingCounter: false
     }
-    
-    const options = {
-        limit: limit ?? 1,
-        page: page,
-        query: query,
-        sort: {price: sort },
-        customLabels: myCustomLabels
+
+    const query = {
+    }
+    if (category){
+        query.category= category.toLowerCase()
+    }
+    if (status){
+        query.status= status.toLowerCase()
     }
 
+    const options = {
+        limit: limit,
+        page: page,
+        customLabels: myCustomLabels
+    }
+    if(sort){
+        options.sort = {price: sort}
+    }
     try{
-        const products = await productModel.find().paginate(options)
+        const products = await productModel.paginate(query,options)
         let resultStatus = "success"
-        let prevLink = products.hasPrevPage?`${req.baseUrl}?page=${products.prevPage}&limit=${products.limit}`:null
-        let nextLink = products.hasNextPage?`${req.baseUrl}?page=${products.nextPage}&limit=${products.limit}`:null
-        if(page>products.totalPages){
-            resultStatus="error"
+        let prevLink = products.hasPrevPage?`http://${req.host}${req.baseUrl}?page=${products.prevPage}`:null
+        let nextLink = products.hasNextPage?`http://${req.host}${req.baseUrl}?page=${products.nextPage}`:null
+        if(options.limit!=5){
+            prevLink = products.hasPrevPage?prevLink + `&limit=${limit}`:null
+            nextLink = products.hasNextPage?nextLink + `&limit=${limit}`:null
         }
-        res.status(200).send({
+        if(sort){
+            prevLink = products.hasPrevPage?prevLink + `&sort=${sort}`:null
+            nextLink = products.hasNextPage?nextLink + `&sort=${sort}`:null
+        }
+        if(status){
+            prevLink = products.hasPrevPage?prevLink + `&status=${status}`:null
+            nextLink = products.hasNextPage?nextLink + `&status=${status}`:null
+        }
+        if(category){
+            prevLink = products.hasPrevPage?prevLink + `&category=${category}`:null
+            nextLink = products.hasNextPage?nextLink + `&category=${category}`:null
+        }
+
+        res.links({
+            prev: prevLink,
+            next: nextLink
+        })
+        if(products.payload.length==0){
+            resultStatus="error"
+            return res.status(400).send({
+                status: resultStatus,
+                ...products
+            })
+        }
+        return res.status(200).send({
             status: resultStatus,
             ...products,
-            prevLink: `${prevLink}`,
-            nextLink: `${nextLink}`
+            prevLink: prevLink,
+            nextLink: nextLink
             })
     }catch(error){
         res.status(500).send(error)
     }
 })
+
 
 productsRouter.get("/:pid", async (req,res)=> {
     const {pid} = req.params
