@@ -4,7 +4,6 @@ import productsRouter from "./src/routes/products.router.js"
 import cartsRouter from "./src/routes/carts.router.js"
 import viewsRouter from "./src/routes/views.router.js"
 import mongoose from "mongoose"
-import productModel from "./src/modules/product.model.js"
 
 const PORT = 8080
 const app = express()

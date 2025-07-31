@@ -1,0 +1,19 @@
+<div>
+    <h2>Cart ID: {{convertedCart._id}}</h2>
+    <div id="productList">
+    {{#each showProducts}}
+    <div class="card">
+        <p>ID: {{this.productID._id}}</p>
+        <p>Title: {{this.productID.title}}</p>
+        <p>Description: {{this.productID.description}}</p>
+        <p>Code: {{this.productID.code}}</p>
+        <p>Price: {{this.productID.price}}</p>
+        <p>Status: {{this.productID.status}}</p>
+        <p>Stock: {{this.productID.stock}}</p>
+        <p>Category: {{this.productID.category}}</p>
+        <p>Thumbnails: {{this.productID.thumbnails}}</p>
+        <p>Quantity: {{this.quantity}}</p>
+    </div>  
+    {{/each}}
+    </div>
+</div>

@@ -1,9 +1,9 @@
 <div>
     <h2>{{pageName}}</h2>
     <div id="productList">
-    {{#each products}}
+    {{#each showProducts}}
     <div class="card">
-        <p>ID: {{this.id}}</p>
+        <p>ID: {{this._id}}</p>
         <p>Title: {{this.title}}</p>
         <p>Description: {{this.description}}</p>
         <p>Code: {{this.code}}</p>
@@ -12,7 +12,13 @@
         <p>Stock: {{this.stock}}</p>
         <p>Category: {{this.category}}</p>
         <p>Thumbnails: {{this.thumbnails}}</p>
+        <button class="add" id={{this._id}}>Add to cart</button>
     </div>  
     {{/each}}
+    <div>
+        <a href={{prevLink}}>Previous page</a>
+        <a href={{nextLink}}>Next page</a>
+    </div>
     </div>
 </div>
+<script src="/product.handler.js"></script>
