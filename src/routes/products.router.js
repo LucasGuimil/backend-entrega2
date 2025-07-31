@@ -4,7 +4,7 @@ import productModel from "../modules/product.model.js"
 const productsRouter = Router()
 
 productsRouter.get("/", async (req,res)=>{
-    const {limit = 5, page = 1, sort,status,category} = req.query
+    const {limit = 10, page = 1, sort,status,category} = req.query
     const myCustomLabels = {
         docs: "payload",
         totalDocs: false,
@@ -34,7 +34,7 @@ productsRouter.get("/", async (req,res)=>{
         let resultStatus = "success"
         let prevLink = products.hasPrevPage?`http://${req.host}${req.baseUrl}?page=${products.prevPage}`:null
         let nextLink = products.hasNextPage?`http://${req.host}${req.baseUrl}?page=${products.nextPage}`:null
-        if(options.limit!=5){
+        if(options.limit!=10){
             prevLink = products.hasPrevPage?prevLink + `&limit=${limit}`:null
             nextLink = products.hasNextPage?nextLink + `&limit=${limit}`:null
         }

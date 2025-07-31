@@ -4,7 +4,7 @@ addButtons.forEach(button =>{
             const pid = button.getAttribute("id")
             let cid = prompt("Insert your cart ID to add this product:")
             try {
-                const addedproduct = await fetch(`/api/carts/${cid}/product/${pid}`,{
+                const addedproduct = await fetch(`http://localhost:8080/api/carts/${cid}/product/${pid}`,{
                     method: "POST"
                 })
                 const message = await addedproduct.text()
