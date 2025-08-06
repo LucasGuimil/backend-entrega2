@@ -20,7 +20,7 @@ productsRouter.get("/", async (req,res)=>{
                 ...products
             })
         }
-        resultStatus = "succes"
+        resultStatus = "success"
         return res.status(200).send({
             status: resultStatus,
             ...products,
