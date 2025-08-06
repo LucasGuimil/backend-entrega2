@@ -1,62 +1,18 @@
 import { Router } from "express"
-import productModel from "../modules/product.model.js"
 import cartModel from "../modules/cart.model.js"
+import { getProducts } from "../managers/ProductManager.js"
 
 const viewsRouter = Router()
 
 viewsRouter.get("/products", async (req, res)=> {
-    
-    const {limit = 5, page = 1, sort,status,category} = req.query
-    const myCustomLabels = {
-        docs: "payload",
-        totalDocs: false,
-        limit: false,
-        pagingCounter: false
-    }
 
-    const query = {
-    }
-    if (category){
-        query.category= category.toLowerCase()
-    }
-    if (status){
-        query.status= status.toLowerCase()
-    }
-
-    const options = {
-        limit: limit,
-        page: page,
-        customLabels: myCustomLabels
-    }
-    if(sort){
-        options.sort = {price: sort}
-    }
     try{
-        const products = await productModel.paginate(query,options)
-        let resultStatus = "success"
-        let prevLink = products.hasPrevPage?`http://${req.host}${req.path}?page=${products.prevPage}`:null
-        let nextLink = products.hasNextPage?`http://${req.host}${req.path}?page=${products.nextPage}`:null
-        if(options.limit!=5){
-            prevLink = products.hasPrevPage?prevLink + `&limit=${limit}`:null
-            nextLink = products.hasNextPage?nextLink + `&limit=${limit}`:null
-        }
-        if(sort){
-            prevLink = products.hasPrevPage?prevLink + `&sort=${sort}`:null
-            nextLink = products.hasNextPage?nextLink + `&sort=${sort}`:null
-        }
-        if(status){
-            prevLink = products.hasPrevPage?prevLink + `&status=${status}`:null
-            nextLink = products.hasNextPage?nextLink + `&status=${status}`:null
-        }
-        if(category){
-            prevLink = products.hasPrevPage?prevLink + `&category=${category}`:null
-            nextLink = products.hasNextPage?nextLink + `&category=${category}`:null
-        }
-
+        const products = await getProducts(req)
         res.links({
-            prev: prevLink,
-            next: nextLink
+            prev: products.prevLink,
+            next: products.nextLink
         })
+        let resultStatus
         if(products.payload.length==0){
             resultStatus="error"
             return res.status(400).send({
@@ -67,11 +23,11 @@ viewsRouter.get("/products", async (req, res)=> {
         const showProducts = products.payload.map(product => product.toObject())
         res.render("home",{
             showProducts,
-            prevLink: prevLink,
-            nextLink: nextLink
+            prevLink: products.prevLink,
+            nextLink: products.nextLink
             })}
             catch(error){
-                return res.status(404).send("not found")
+                return res.status(404).send("Not found")
             }}
         )
 
