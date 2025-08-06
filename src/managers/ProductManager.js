@@ -76,7 +76,7 @@ export class ProductManager {
 }
 
 export const getProducts = async (newQuery)=> {
-    const {limit = 5, page = 1, sort,status,category} = newQuery.query
+    const {limit = 10, page = 1, sort,status,category} = newQuery.query
     const myCustomLabels = {
         docs: "payload",
         totalDocs: false,
@@ -106,7 +106,7 @@ export const getProducts = async (newQuery)=> {
         const products = await productModel.paginate(query,options)
         let prevLink = products.hasPrevPage?`http://${newQuery.host}${queryPath}?page=${products.prevPage}`:null
         let nextLink = products.hasNextPage?`http://${newQuery.host}${queryPath}?page=${products.nextPage}`:null
-        if(options.limit!=5){
+        if(options.limit!=10){
             prevLink = products.hasPrevPage?prevLink + `&limit=${limit}`:null
             nextLink = products.hasNextPage?nextLink + `&limit=${limit}`:null
         }
