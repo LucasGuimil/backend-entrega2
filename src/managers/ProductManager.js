@@ -1,6 +1,5 @@
 import fs from "fs"
-import productModel from "../modules/product.model.js"
-import { basename } from "path"
+import productModel from "../models/product.model.js"
 
 export class ProductManager {
     static async getProducts() {
